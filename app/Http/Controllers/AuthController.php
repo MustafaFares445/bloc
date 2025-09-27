@@ -18,7 +18,7 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]))
-            return response()->json(['error' => 'Invalide Credintial'], 401);
+            return response()->json(['error' => 'Invalid Credintial'], 401);
 
         $user = Auth::user();
         $token = $user->createToken('api')->plainTextToken;

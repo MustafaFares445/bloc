@@ -26,7 +26,13 @@ class PostController extends Controller
     {
         $data = array_merge($request->validated(), ['views' => 0]);
         $post = Post::create($data);
-        return PostResource::make($post->load('category'));
+
+        $post->tags()->attach($request->tagsIds);
+
+        $post->addMedia($request->file('image'))
+            ->toMediaCollection('image');
+
+        return PostResource::make($post->load(['category' , 'tags' , 'media']));
     }
 
     public function show(Post $post)

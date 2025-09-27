@@ -5,10 +5,14 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Whoops\Handler\HandlerInterface;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use Sluggable;
+    use Sluggable , InteractsWithMedia;
     protected $fillable = [
         'title',
         'description',
@@ -16,6 +20,11 @@ class Post extends Model
         'is_active',
         'category_id',
     ];
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 
     public function category(): BelongsTo
     {
